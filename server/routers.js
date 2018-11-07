@@ -14,6 +14,7 @@ module.exports = function(app){
     app.post('/editor',(req,res)=>
     {
         res.setHeader('Access-Control-Allow-Origin','*');
+        console.log(req.body.data);
         console.log(JSON.parse(req.body.data));
         res.send('hello');
         res.end();

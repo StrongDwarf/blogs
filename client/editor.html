@@ -125,6 +125,7 @@
     </div>
 
 </body>
+<script src="./js/ajax.js"></script>
 <script>
     window.onload = function () {
         /* 模拟数据 */
@@ -358,8 +359,9 @@
             this.getTextType.flag = 'normal';
             let arr = this.getTextArr(obj.el);
             let rootNode = this.getNode('root',obj);
-            let nodeFather = rootNode
+            let nodeFather = rootNode;
             
+            //将节点添加到树中。
             for(let i =0;i<arr.length;i++){
                 let type = this.getTextType(arr[i].data);
                 let node = this.getNode(type,arr[i]);
@@ -367,6 +369,9 @@
                     nodeFather = this.addNodeToTree(nodeFather,node);
                 }
             }
+
+            //消除树节点中的圆环结构, 即请求所有节点中的father属性
+            rootNode = this.removeCircle(rootNode);
 
             return rootNode;
 
@@ -559,6 +564,20 @@
                     }    
                 }
             },
+            removeCircle(rootNode){
+                return setNodeToNull(rootNode);
+
+                //深度遍历节点树上的所有节点,并将所有节点中的father节点置null,
+                function setNodeToNull(node){
+                    if(node.childrens && node.childrens.length != 0){
+                        for(let i=0;i<node.childrens.length;i++){
+                            setNodeToNull(node.childrens[i]);
+                        }
+                    }
+                    node.father = '';
+                    return node;
+                }
+            },
             //节点的一些通用方法
             nodeFunc:
             {
@@ -579,53 +598,12 @@
             pageObj.isSecret = false;
             var tree =new MarkDownTree(pageObj);
             console.log(tree);
-        }
-
-        const Ajax = {
-            get(url,callback){
-                let xhr = new XMLHttpRequest();
-                xhr.open('get',url,true);
-                xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded")
-                xhr.send();
-                xhr.onreadystatechange = function()
-                {
-                    if(xhr.readyState == 4 && xhr.status == 200)
-                    {
-                        //console.log(ajax.responseText);  //输入相应的内容
-                        callback(xhr.responseText);
-                    }
-                }
-            },
-            post(url,data,callback){
-                let xhr = new XMLHttpRequest();
-                xhr.open('post',url,true);
-                xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-                xhr.send('data='+JSON.stringify(data));
-                xhr.onreadystatechange = function()
-                {
-                    if(xhr.readyState == 4 && xhr.status ==200)
-                    {
-                        callback(xhr.responseText);
-                    }
-                }
-            }
-
-        }
-
-        //var objStr = JSON.stringify(obj);
-        //console.log(objStr);
-        const o = {
-            'name':'xiaobaicai',
-            'obj':{
-                'age':'23'
-            }
-        }
-
-        Ajax.get('http://127.0.0.1:8080/editor',(data)=>{
-            console.log(data);
-        })
-        
-
+            console.log(JSON.stringify(tree));
+            console.log(JSON.parse(JSON.stringify(tree)));
+            Ajax.post('http://127.0.0.1:8080/editor',tree,(res)=>{
+            console.log(res);
+            })
+        }     
         
     }
 </script>
