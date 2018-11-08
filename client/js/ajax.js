@@ -25,6 +25,11 @@
             let xhr = new XMLHttpRequest();
             xhr.open('post',url,true);
             xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            //xhr.send('data='+JSON.stringify(data));
+            //var fd = new FormData();
+            //fd.append("data",'111');
+            //fd.append("people",'userid');
+            //fd.append("ck",'ck');
             xhr.send('data='+JSON.stringify(data));
             xhr.onreadystatechange = function()
             {

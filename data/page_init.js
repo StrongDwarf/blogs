@@ -3,7 +3,64 @@
  * @explain :用于加载博客主页时候需要使用的数据
  */
 
-const data1 = {
-    title:'小白菜的博客',
-    signature:'人生若只如初见,何事秋风悲画扇'
-}
+const pageInitData = {'dataList':[{
+    'id':'01',
+    'title':'HTML中元素居中的n种方式',
+    'time':'1541641044665',
+    'tags':['html','css','javascript'],
+    'summary':'小白菜的测试文档.'
+},{
+    'id':'02',
+    'title':'手动封装一个ajax',
+    'time':'1541631044665',
+    'tags':['javascript','框架解析'],
+    'summary':'小白菜的测试文档小白菜的测试文小白菜的测试文档小白菜的测试文档小白菜的测试文档小白菜的测试文档小白菜的测试文档小白菜的测试文档小白菜的测试文档'
+},{
+    'id':'03',
+    'title':'HTML中元素居中的n种方式',
+    'time':'1541640034665',
+    'tags':['html','css','javascript'],
+    'summary':'小白菜的测试文档.'
+},{
+    'id':'04',
+    'title':'HTML中元素居中的n种方式',
+    'time':'1541630004665',
+    'tags':['html','css','javascript'],
+    'summary':'小白菜的测试文档.'
+},{
+    'id':'05',
+    'title':'HTML中元素居中的n种方式',
+    'time':'1541640743665',
+    'tags':['html','css','javascript'],
+    'summary':'小白菜的测试文档.'
+},{
+    'id':'06',
+    'title':'HTML中元素居中的n种方式',
+    'time':'1541641044665',
+    'tags':['html','css','javascript'],
+    'summary':'小白菜的测试文档.'
+},{
+    'id':'07',
+    'title':'HTML中元素居中的n种方式',
+    'time':'1541641044665',
+    'tags':['html','css','javascript'],
+    'summary':'小白菜的测试文档.'
+},{
+    'id':'08',
+    'title':'HTML中元素居中的n种方式',
+    'time':'1541641044665',
+    'tags':['html','css','javascript'],
+    'summary':'小白菜的测试文档.'
+},{
+    'id':'09',
+    'title':'HTML中元素居中的n种方式',
+    'time':'1541641044665',
+    'tags':['html','css','javascript'],
+    'summary':'小白菜的测试文档.'
+},{
+    'id':'10',
+    'title':'HTML中元素居中的n种方式',
+    'time':'1541641044665',
+    'tags':['html','css','javascript'],
+    'summary':'小白菜的测试文档.'
+},]}

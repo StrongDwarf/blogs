@@ -1,6 +1,8 @@
-const express = require('express');
+const Article = require('./controllers/article_controller.js');
+
 
 module.exports = function(app){
+    /*
     app.get('/',(req,res) =>
     {
         res.send('hello world');
@@ -11,11 +13,17 @@ module.exports = function(app){
         res.setHeader('Access-Control-Allow-Origin','*');
         res.send('test');
     })
-    app.post('/editor',(req,res)=>
+    */
+    app.post('/putArticle',Article.put);
+    app.post('/getArticle',Article.get);
+
+    app.post('/article',(req,res)=>
     {
         res.setHeader('Access-Control-Allow-Origin','*');
-        console.log(req.body.data);
+        console.log(req.body);
         console.log(JSON.parse(req.body.data));
+        //console.log(req.body.data);
+        //console.log(JSON.parse(req.body.data));
         res.send('hello');
         res.end();
     })

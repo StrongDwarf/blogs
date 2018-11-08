@@ -312,18 +312,7 @@
             /*  获得时间,  以'20181102160638'的形式返回  */
             getTime() 
             {
-                let timeStr = '';
-                const time = new Date();
-
-                function formatValue(value) {
-                    if (value < 10) {
-                        return '0' + value;
-                    } else {
-                        return value;
-                    }
-                }
-                return timeStr + time.getFullYear() + formatValue(time.getMonth()) + formatValue(time.getDate())
-                    + formatValue(time.getHours()) + formatValue(time.getMinutes()) + formatValue(time.getSeconds());
+                return (new Date()).getTime();
             },
             getTitle()
             {
@@ -398,6 +387,16 @@
                 }
                 return arry;
             },
+            //对节点数据中的一些字符进行转义
+            trans(data){
+                console.log('data');
+                console.log(data);
+                data = data.replace(/{/g,'\{');
+                data = data.replace(/'/g,"\'");
+                data = data.replace(/"/g,"\"");
+                data = data.replace(/:/g,"\:");
+                return data;
+            },
             //根据输入的type和data获取节点
             getNode(type,data)
             {
@@ -452,11 +451,11 @@
                 }
                 else if(arr1.indexOf(type) != -1)
                 {
-                    return new CreateStemNode(type,data);
+                    return new CreateStemNode(type,this.trans(data.data));
                 }
                 else if(arr2.indexOf(type) != -1)
                 {
-                    return new CreateBasicNode(type,data);
+                    return new CreateBasicNode(type,this.trans(data.data));
                 }
                 else
                 {
@@ -597,11 +596,11 @@
             pageObj.el    = page.editor;
             pageObj.isSecret = false;
             var tree =new MarkDownTree(pageObj);
+            //console.log(tree);
+            //console.log(JSON.stringify(tree));
             console.log(tree);
-            console.log(JSON.stringify(tree));
-            console.log(JSON.parse(JSON.stringify(tree)));
-            Ajax.post('http://127.0.0.1:8080/editor',tree,(res)=>{
-            console.log(res);
+            Ajax.post('http://127.0.0.1:8080/putArticle',tree,(res)=>{
+                console.log(res);
             })
         }     
         

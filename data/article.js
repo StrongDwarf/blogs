@@ -1,0 +1,54 @@
+const article_data = {
+    'id':'01',
+    'title':'HTML中元素居中的n种方式',
+    'signature':'再见了朋友，我还要远走，到你还没去过的角落',
+    'time':'20181023051234',
+    'tags':['html','css','javascript'],
+    'type':'root',
+    'childrens':[{
+        'data':'在编写页面的时候，很多时候我们都需要将元素居中显示',
+        'type':'p'
+    },{
+        'data':'一级标题1',
+        'type':'h1',
+        'childrens':[{
+            'data':'二级标题12',
+            'type':'h2',
+            'childrens':[{
+                'data':'小白菜白又白',
+                'type':'p'
+            },{
+                'data':'code start',
+                'type':'code',
+                'childrens':[{
+                    'data':'class xiaobaicai',
+                    'type':'codeline'
+                },{
+                    'data':'&nbsp;print("xiaobaicai");',
+                    'type':'codeline'
+                },{
+                    'data':'&nbsp;一段代码',
+                    'type':'codeline'
+                },{
+                    'data':'xhr.send(\'data=\'+JSON.stringify(data));',
+                    'type':'codeline'
+                }]
+            }]
+        }]
+    },{
+        'data':'一级标题2',
+        'type':'h1',
+        'childrens':[]
+    },{
+        'data':'一级标题3',
+        'type':'h1',
+        'childrens':[]
+    },{
+        'data':'一级标题4',
+        'type':'h1',
+        'childrens':[]
+    },{
+        'data':'好了，以上就是我所了解的全部的元素居中的方式了，但CSS博大精深，如果大家还知道其他元素居中的方式的话，欢迎一起讨论',
+        'type':'p'
+    }]
+}

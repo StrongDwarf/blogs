@@ -1,19 +1,22 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const expressSession = require('express-session');
-//const mongoose = require('mongoose');
-//const conn = mongoose.connect('mongodb://localhost/blogs');
-const app = express();
-const http = require('http').Server(app);
+var express = require('express');
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var expressSession = require('express-session');
+//连接数据库
+var mongoose = require('mongoose');
+var conn = mongoose.connect('mongodb://localhost/blogs');
 
+var app = express();
+var http = require('http').Server(app);
+
+app.use(bodyParser.json({'limit':'10000kb'}));
 app.use(bodyParser());
 app.use(cookieParser());
 app.use(expressSession({
-    secret:'SECRET',
-    cookie:{maxAge:60*60*1000},
+	secret:'SECRET',
+	cookie:{maxAge:60*60*1000},
 }));
-//导入路由模块
+//导入路由模块和websocket模块
 require('./routers')(app);
 http.listen(8080);
-console.log('server START PORT 8080');
+console.log('server start port 8080');
