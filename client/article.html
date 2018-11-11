@@ -1,0 +1,137 @@
+<html>
+
+<head>
+    <title>小白菜的博客主页</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="./css/article.css" type="text/css" />
+</head>
+
+<body>
+    <!--  主区域  -->
+    <div class="main">
+        <!--  正文区域  -->
+        <div class="content">
+            <!--  正文头部  -->
+            <div class="content-header">
+                <a class= "catalog"><span class="icon icon-catalog"></span></a>
+                <a class="content-header-name" href="#">小白菜的博客</a>
+                <a class= "menu"><span class="icon icon-menu"></span></a>
+            </div>
+            <!--  正文内容区域  -->
+
+            <div class="content-body">
+                <!--  文章内容  -->
+                <div class="article-header">
+                    <p class="article-header-name">
+                        原生JS实现VUE中的双向数据绑定
+                    </p>
+                    <p class="article-header-tags">
+                        <span>框架实现&nbsp;/</span>
+                        <span>JavaScript&nbsp;/</span>
+                        <span>VUE</span>
+                    </p>
+                    <p class="article-header-signature">
+                        我多想再见她一眼，哪怕匆匆一眼就别离
+                    </p>
+                </div>
+                <div class="article-body">
+                    <p>
+                        使用vue也好有一段时间了，虽然对其双向绑定原理也有了解个大概，
+                        但也没好好探究下其原理实现，所以这次特意花了一晚时间查阅资料和阅读相关源码，
+                        自己也实现一个简单版vue的双向绑定版本。整理了一下思路如下
+                    </p>
+                    <h1>
+                            vue数据双向绑定原理
+                    </h1>
+                    <h2>
+                            vue数据双向绑定原理
+                    </h2>
+                    <h3>
+                            vue数据双向绑定原理
+                    </h3>
+                    <h4>
+                            vue数据双向绑定原理
+                    </h4>
+                    <p>
+                            vue数据双向绑定是通过数据劫持结合发布者-订阅者模式的方式来实现的，
+                            我们可以先来看一下通过控制台输出一个定义在vue初始化数据上的对象是个什么东西
+                    </p>
+                    <ul>
+                        <li>
+                            1,VUE的劫持实现
+                        </li>
+                        <li>
+                            2,Angular的脏值检测
+                        </li>
+                        <li>
+                            3,boneston的赋值检测
+                        </li>
+                    </ul>
+                    <p>
+                        代码
+                    </p>
+                    <div class="code">
+                        <div class="code-container">
+                            <p>var&nbsp;vm&nbsp;=&nbsp;new&nbsp;Vue({</p>
+                            <p>&nbsp;&nbsp;data:&nbsp;{</p>
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;{</p>
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a:&nbsp;1</p>
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+                            <p>&nbsp;&nbsp;},</p>
+                            <p>&nbsp;&nbsp;created:funtion(){</p>
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;console.log(this.obj);</p>
+                            <p>&nbsp;&nbsp;}</p>
+                            <p>});</p>
+                        </div>
+                    </div>
+                    <p>
+                        结果
+                    </p>
+                    <img src="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225032257-1498304708.png">
+
+                    <h1>
+                            vue数据双向绑定原理
+                    </h1>
+                    <p>
+                            vue数据双向绑定是通过数据劫持结合发布者-订阅者模式的方式来实现的，
+                            我们可以先来看一下通过控制台输出一个定义在vue初始化数据上的对象是个什么东西
+                    </p>
+                    <ul>
+                        <li>
+                            VUE的劫持实现
+                        </li>
+                        <li>
+                            Angular的脏值检测
+                        </li>
+                        <li>
+                            boneston的赋值检测
+                        </li>
+                    </ul>
+                    <p>
+                        代码
+                    </p>
+                    <div class="code">
+                        <p>var&nbsp;vm&nbsp;=&nbsp;new&nbsp;Vue({</p>
+                        <p>&nbsp;&nbsp;data:&nbsp;{</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;{</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a:&nbsp;1</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+                        <p>&nbsp;&nbsp;},</p>
+                        <p>&nbsp;&nbsp;created:funtion(){</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;console.log(this.obj);</p>
+                        <p>&nbsp;&nbsp;}</p>
+                        <p>});</p>
+                    </div>
+                    <p>
+                        结果
+                    </p>
+                    <img src="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225032257-1498304708.png">
+
+                </div>
+                <div class="article-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

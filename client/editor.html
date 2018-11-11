@@ -103,6 +103,10 @@
             <input class="input-title" type="text" placeholder="请输入标题">
             <label class="icon icon-code"></label>
         </div>
+        <div class="signature">
+            <label>签名</label>
+            <input class="input-signature" type="text" placeholder="请输入签名">
+        </div>
         <div contenteditable="true" id="editor">
             <p><br></p>
         </div>
@@ -353,6 +357,7 @@
             //将节点添加到树中。
             for(let i =0;i<arr.length;i++){
                 let type = this.getTextType(arr[i].data);
+                arr[i].data = formatTextData(type,arr[i].data);
                 let node = this.getNode(type,arr[i]);
                 if(node){
                     nodeFather = this.addNodeToTree(nodeFather,node);
@@ -363,6 +368,26 @@
             rootNode = this.removeCircle(rootNode);
 
             return rootNode;
+
+            function formatTextData(type,data){
+                switch(type){
+                    case 'h1':
+                        return data.split('#')[1];
+                        break;
+                    case 'h2':
+                        return data.split('##')[1];
+                        break;
+                    case 'h3':
+                        return data.split('###')[1];
+                        break;
+                    case 'h4':
+                        return data.split('####')[1];
+                        break;
+                    default:
+                        return data;
+                        break
+                }
+            }
 
         }
         MarkDownTree.prototype = {
@@ -487,6 +512,7 @@
                             }
                             return 'h2'
                         }
+
                         return 'h1'
                     }
                     
