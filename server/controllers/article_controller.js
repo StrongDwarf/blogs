@@ -17,7 +17,11 @@ function getSummary(data){
 
 module.exports = {
 	put(req, res) {
+		console.log(req.body.data);
+		
 		let data = JSON.parse(req.body.data);
+		console.log(data);
+		/*
 		let ac = new Article({ 'time': data.time+'' });
 		ac.set('type',data.type);
 		ac.set('title',data.title);
@@ -31,7 +35,7 @@ module.exports = {
 				console.log(err);
 			}
 			console.log(ac);
-		})
+		}) */
 	},
 	get() {
 		Article.find({}).limit(10).lt('time', req.body.time)

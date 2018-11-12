@@ -413,14 +413,12 @@
                 return arry;
             },
             //对节点数据中的一些字符进行转义
-            trans(data){
-                console.log('data');
-                console.log(data);
-                data = data.replace(/{/g,'\{');
-                data = data.replace(/'/g,"\'");
-                data = data.replace(/"/g,"\"");
-                data = data.replace(/:/g,"\:");
-                return data;
+            trans(text){
+                return text.replace(/[&]/g, function(match, pos, originalText){
+                    switch(match){
+                    case "&" : return "~~";
+                } 
+                }); 
             },
             //根据输入的type和data获取节点
             getNode(type,data)
@@ -625,6 +623,7 @@
             //console.log(tree);
             //console.log(JSON.stringify(tree));
             console.log(tree);
+            console.log(JSON.stringify(tree));
             Ajax.post('http://127.0.0.1:8080/putArticle',tree,(res)=>{
                 console.log(res);
             })

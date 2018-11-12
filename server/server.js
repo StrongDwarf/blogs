@@ -4,7 +4,7 @@ var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
 //连接数据库
 var mongoose = require('mongoose');
-var conn = mongoose.connect('mongodb://localhost/blogs');
+var conn = mongoose.connect('mongodb://localhost/blogsPrivate');
 
 var app = express();
 var http = require('http').Server(app);
