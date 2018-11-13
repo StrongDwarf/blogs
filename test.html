@@ -1,27 +1,20 @@
 <div id="app" cloak>
-    <p>总数:{{total}}</p>
-    <my-component v-model="total"></my-component>
+    <child-component>
+        <template scope="props">
+            <p>来自父组件的内容</p>
+            <p>{{props.msg}}</p>
+        </template>
+    </child-component>
 </div>
 <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
 <script>
-    Vue.component('my-component',{
-        template:'<button @click="handleClick">+1</button>',
-        data:function(){
-            return{
-                counter:0
-            }
-        },
-        methods:{
-            handleClick:function(){
-                this.counter++;
-                this.$emit('input',this.counter);
-            }
-        }
+    Vue.component('child-component',{
+        template:'\
+        <div class="container">\
+            <slot msg="来自子组件的内容"></slot>\
+        </div>'
     });
     var app = new Vue({
-        el:'#app',
-        data:{
-            total:0
-        }
+        el:'#app'
     })
 </script>
