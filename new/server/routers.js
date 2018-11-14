@@ -9,14 +9,22 @@ module.exports = function(app){
     
     app.get('/test',(req,res) =>
     {
-        res.send('hello world');
-        console.log('用户访问');
+        console.log(req.body);
+        res.send('xiaobaicai');
+        res.end();
     });
     app.post('/test',(req,res)=>
     {
         console.log(req.body);
         res.setHeader('Access-Control-Allow-Origin','*');
         res.send('test');
+        res.end();
+    })
+    app.post('/text1',(req,res) => {
+        console.log(req.body);
+        res.setHeader('Access-Control-Allow-Origin','*');
+        res.json({'data':'xiaobaicai'});
+        res.end();
     })
 
     app.post('/putArticle',Article.putArticle);

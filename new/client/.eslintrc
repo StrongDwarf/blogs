@@ -1,0 +1,26 @@
+{
+  "root": true,
+  "parserOptions": {
+    "parser": "babel-eslint",
+    "ecmaVersion": 2017,
+    "sourceType": "module"
+  },
+  "plugins": ["vue"],
+  "extends": ["plugin:vue/recommended", "@vue/standard"],
+  "rules": {
+    "vue/max-attributes-per-line": 0,
+    "vue/html-closing-bracket-newline": "error",
+    "vue/html-closing-bracket-spacing": "error",
+    "vue/script-indent": [
+      "error",
+      2,
+      {
+        "baseIndent": 0
+      }
+    ],
+    "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }]
+  },
+  "globals": {
+    "import": false
+  }
+}

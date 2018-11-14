@@ -1,0 +1,12 @@
+{
+  "presets": [
+    "@vue/app"
+  ],
+  "env": {
+    "production": {
+      "plugins": [
+        "transform-remove-console"
+      ]
+    }
+  }
+}
