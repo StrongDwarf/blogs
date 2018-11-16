@@ -1,0 +1,23 @@
+<div id="app">
+    <input type="text" v-focus>
+</div>
+<script>
+    var throttle = function (func, delay) {
+        var prev = Date.now();
+        return function () {
+            var context = this;
+            var args = arguments;
+            var now = Date.now();
+            if (now - prev >= delay) {
+                func.apply(context, args);
+                prev = Date.now();
+            }
+        }
+    }
+
+    function foo() {
+        console.log('You are scrolling!');
+    }
+
+    setInterval(throttle(foo, 2000), 200);
+</script>
