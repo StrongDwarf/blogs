@@ -3,9 +3,6 @@ const mongoose = require('mongoose'),
 
 //根节点
 const rootNodeSchema = new Schema({
-	type:{
-		type:String
-	},
 	time:{
 		type:String,
 		index:1
@@ -26,7 +23,7 @@ const rootNodeSchema = new Schema({
 	tags:{
 		type:Array
 	},
-	childrens:{
+	article:{
 		type:Array
 	}
 })

@@ -173,19 +173,13 @@ router_dataformat:{
               count:'',
               day:'29',
               childrens:[{
-                article_title:'',
                 article_id:''
-                article_tags:''
-                article_summary:''
               }]
             },{
               day:'29',
               count:'',
               childrens:[{
-                article_title:'',
                 article_id:''
-                article_tags:''
-                article_summary:''
             }]
           }]
         }]

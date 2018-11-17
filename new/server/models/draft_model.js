@@ -3,9 +3,6 @@ const mongoose = require('mongoose'),
 
 //根节点
 const draftSchema = new Schema({
-	type:{
-		type:String
-	},
 	time:{
 		type:String,
 		index:1
@@ -26,9 +23,9 @@ const draftSchema = new Schema({
 	tags:{
 		type:Array
 	},
-	childrens:{
+	article:{
 		type:Array
 	}
 })
 
-mongoose.model('Article',draftSchema);
+mongoose.model('Draft',draftSchema);

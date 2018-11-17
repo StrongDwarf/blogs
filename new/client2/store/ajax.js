@@ -3,7 +3,7 @@ function forMatData(data){
     for(let a in data){
         if(typeof data[a] =='object')
         {
-            str = str + a + '=' + JSON.stringify(data[a]);
+            str = str + a + '=' + JSON.stringify(data[a]) + '&';
         }
         else
         {

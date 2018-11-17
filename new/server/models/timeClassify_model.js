@@ -9,6 +9,9 @@ const timeClassifySchema = new Schema({
     count:{
         type:Number
     },
+    lastTime:{
+        type:Number
+    },
     childrens:{
         type:Array
     }

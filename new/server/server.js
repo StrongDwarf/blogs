@@ -22,5 +22,5 @@ app.use(expressSession({
 */
 //导入路由模块和websocket模块
 require('./routers')(app);
-http.listen(8080);
-console.log('server start port 8080');
+http.listen(8083);
+console.log('server start port 8083');

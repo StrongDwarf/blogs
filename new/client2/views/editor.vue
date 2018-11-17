@@ -48,11 +48,13 @@
         methods:{
             put(){
                 console.log(this.article);
-                Ajax.post(apiUrl.putArticle,this.article,function(res){
+
+                Ajax.post(apiUrl.putArticle,{data:this.article},function(res){
                     console.log(res);
                 })
             },
             submit(){
+                console.log('点击了提交');
                 const _this = this;
                 _this.article.type = 1;
                 _this.put();
