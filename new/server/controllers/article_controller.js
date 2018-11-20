@@ -22,8 +22,10 @@ function getSummary(data) {
 	return str;
 }
 
-
-//初始化TagClassify表和TimeClassify表
+/**
+ * init()
+ * When the program is first activated, the function is called to complete initialization.
+ */
 function init() {
 	let tcf = new TagClassify({
 		'type': 'root',
@@ -49,7 +51,13 @@ function init() {
 //init()
 
 
-//文章插入到文章表后，更新标签表
+/**
+ * update tagClassify  in database
+ * Called when inserting new data into the article table
+ * 
+ * @param {tags:Array,id:String} article 
+ * @param {} return
+ */
 function updateTagClassify(article) {
 	const tags = article.tags;
 	if (!tags) { return }
@@ -60,46 +68,58 @@ function updateTagClassify(article) {
 	TagClassify.findOneAndUpdate({})
 		.exec(function (err, tcf) {
 			if (err) { console.log(err) }
-				for (let i = 0; i < tags.length; i++) {
-					let hasTag = false;	  //设置一个标记,如果在TagClassify中找到了tag。则置true
-					for (let j = 0; j < tcf[0].childrens.length; j++) {
-						if (tcf[0].childrens[j].tag_name == tags[i]) {
-							hasTag = true;
-							tcf[0].childrens[j].count++;
-							tcf[0].count++;
-							tcf[0].childrens[j].childrens.push(o);
-							break;
-						}
-					}
-					if (!hasTag) {
-						let children = {
-							'tag_name': tags[i],
-							'count': 0,
-							'childrens': []
-						}
-						children.childrens.push(o);
-						children.count++;
-						tcf[0].count++;
-						tcf[0].childrens.push(children);
+			for (let i = 0; i < tags.length; i++) {
+				/* Set a tag if tag is found in TagClassify. Then set true */
+				let hasTag = false;
+				for (let j = 0; j < tcf.childrens.length; j++) {
+					if (tcf.childrens[j].tag_name == tags[i]) {
+						hasTag = true;
+						tcf.childrens[j].count++;
+						tcf.count++;
+						tcf.childrens[j].childrens.push(o);
+						break;
 					}
 				}
-			
+				if (!hasTag) {
+					let children = {
+						'tag_name': tags[i],
+						'count': 0,
+						'childrens': []
+					}
+					children.childrens.push(o);
+					children.count++;
+					tcf.count++;
+					tcf.childrens.push(children);
+				}
+			}
+			tcf.save((err, tcf) => {
+				if (err) { console.log(err) }
+				console.log(tcf)
+			})
+
 		})
 }
 
+/* @test updateTagClassify(article) 
 var article ={
-	tags:['a','b'],
+	tags:['a','b','c'],
 	id:'123456'
 }
 
 updateTagClassify(article);
+*/
 
 
-//文章插入到文章表后，更新TimeClassify表
+/**
+ * update timeClassify  in database
+ * Called when inserting new data into the article table
+ * 
+ * @param {time:Number,id:String} article 
+ * @param {} return
+ */
 function updateTimeClassify(article) {
 	TimeClassify.findOneAndUpdate({}).exec(function (err, timecf) {
 		if (err) { console.log(err) }
-		//比较这篇文章的发表的时间和上次发表文章的时间相差多少
 		const date = new Date(article.time);
 		let obj = {
 			'year': date.getFullYear(),
