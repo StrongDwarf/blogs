@@ -60,37 +60,36 @@ function updateTagClassify(article) {
 	TagClassify.findOneAndUpdate({})
 		.exec(function (err, tcf) {
 			if (err) { console.log(err) }
-
-			for (let i = 0; i < tags.length; i++) {
-				let hasTag = false;	  //设置一个标记,如果在TagClassify中找到了tag。则置true
-				for (let j = 0; j < tcf[0].childrens.length; j++) {
-					if (tcf[0].childrens[j].tag_name == tags[i]) {
-						hasTag = true;
-						tcf[0].childrens[j].count++;
+				for (let i = 0; i < tags.length; i++) {
+					let hasTag = false;	  //设置一个标记,如果在TagClassify中找到了tag。则置true
+					for (let j = 0; j < tcf[0].childrens.length; j++) {
+						if (tcf[0].childrens[j].tag_name == tags[i]) {
+							hasTag = true;
+							tcf[0].childrens[j].count++;
+							tcf[0].count++;
+							tcf[0].childrens[j].childrens.push(o);
+							break;
+						}
+					}
+					if (!hasTag) {
+						let children = {
+							'tag_name': tags[i],
+							'count': 0,
+							'childrens': []
+						}
+						children.childrens.push(o);
+						children.count++;
 						tcf[0].count++;
-						tcf[0].childrens[j].childrens.push(o);
-						break;
+						tcf[0].childrens.push(children);
 					}
 				}
-				if (!hasTag) {
-					let children = {
-						'tag_name': tags[i],
-						'count': 0,
-						'childrens': []
-					}
-					children.childrens.push(o);
-					children.count++;
-					tcf[0].count++;
-					tcf[0].childrens.push(children);
-				}
-			}
-
+			
 		})
 }
 
-var article = {
-	tags: ['a', 'b'],
-	id: '123456'
+var article ={
+	tags:['a','b'],
+	id:'123456'
 }
 
 updateTagClassify(article);
