@@ -191,7 +191,7 @@ const articleController = {
 	 * put article
 	 * 
 	 * @param {Object:{data:{type,title,signature,tags,article}}} req.body 
-	 * @param {JSON:{success|error,message}} res 
+	 * @param {JSON:{success|error,message,id}} res 
 	 */
 	putArticle(req, res) {
 		const data = JSON.parse(req.body.data);
@@ -209,60 +209,85 @@ const articleController = {
 		if (data.type == 'save') {
 			const ac = new Draft(article);
 			ac.save(function (err, ac) {
-				if (err) { console.log(err) }
-				console.log('插入到草稿表成功');
+				if (err) { 
+					console.log(err);
+					res.status(500).json({
+						error:true,
+						message:'保存草稿出错',
+					}).end();
+				}
+				console.log('插入草稿表成功');
 				console.log(ac);
+				res.status(200).json({
+					success:true,
+					message:'保存草稿成功',
+					id:ac.id
+				}).end();
 			})
 		}
 		else if (data.type == 'put') {
 			const ac = new Article(article);
 			ac.save(function (err, ac) {
-				if (err) { console.log(err) }
+				if (err) { 
+					console.log(err);
+					res.status(500).json({
+						error:true,
+						message:'保存文章出错',
+					}).end();
+				}
 				console.log('插入到文章表中成功');
 				console.log(ac);
-				//插入文章表后，更新timeclassify表和tagclassify表
-				updateTimeClassify(ac)
+				if(updateTimeClassify(ac) && updateTagClassify(ac)){
+					res.status(200).json({
+						success:true,
+						message:'发布文章成功',
+						id:ac.id
+					}).end()
+				}else{
+					res.status(500).json({
+						error:true,
+						message:'更新时间表或标签表出错',
+						id:ac.id
+					})
+				}
 			})
 		}
-
-		console.log(article);
-
-		/*
-		let data = JSON.parse(req.body.data);
-		let ac = new Article({ 'time': (new Date()).getTime() + '' });
-		ac.set('type', data.type);
-		ac.set('signature', data.signature);
-		ac.set('title', data.title);
-		ac.set('isSecret', false);
-		ac.set('summary', getSummary(data));
-		ac.set('tags', data.tags);
-		ac.set('article', data.article);
-		ac.save(function (err, ac) {
-			if (err) {
-				console.log('插入数据库出错');
-				console.log(err);
-				res.json({'type':1})
-				res.end()
-			}
-			console.log(ac);
-			res.json({'type':0})
-			res.end();
-		})*/
 	},
+
+	/**
+	 * get article by id
+	 * 
+	 * @param {id:Number} req.body
+	 * @param {error|success,message,article:Array}
+	 */
 	getArticle(req, res) {
-		if (req.body.article_id) {
-			Article.findOne({ '_id': req.body.data.article_id })
+		if (req.body.id) {
+			Article.findOne({ '_id': req.body.id })
 				.exec((err, article) => {
 					if (err) {
 						console.log(err);
-						res.json({ 'type': 1 })
-						res.end();
+						res.statue(404).json({
+							error:true,
+							message:'查询文章失败',
+						}).end();
 					}
-					res.json({ 'type': 0, 'data': article })
-					res.end();
+					res.status(200).json({
+						success:true,
+						message:'查询文章成功',
+						article:article.article
+					}).end();
 				})
 		}
 	},
+
+	/**
+	 * get articleList by time or idList
+	 * if time: You will get 20 articles in the latest time later than a;
+	 * if idList: You will get data matching ID with idList.
+	 * 
+	 * @param {mode,time|idList} req.body
+	 * @param {success|err,ArrayList} res 
+	 */
 	getArticleList(req, res) {
 		if (req.body.type) {
 			switch (req.body.type) {
