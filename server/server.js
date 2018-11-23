@@ -9,9 +9,17 @@ var conn = mongoose.connect('mongodb://localhost/blogs');
 var app = express();
 var http = require('http').Server(app);
 
+//自定义一个CORS中间件
+var allowCrossDomain = function (req, res, next) {
+	res.header('Access-Control-Allow-Origin', '*');//自定义中间件，设置跨域需要的响应头。
+	next();
+};
+
 //设置bodyParse能解析的数据为无限
+app.use(allowCrossDomain);
 app.use(bodyParser.json({'limit':'1000000kb'}));
 app.use(bodyParser());
+
 
 /*
 app.use(cookieParser());

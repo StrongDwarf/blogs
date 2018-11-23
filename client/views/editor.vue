@@ -47,35 +47,40 @@
         },
         methods:{
             isEmpty(){
-                if(!title){
+                if(!this.article.title){
+                    alert('文章不能没有标题')
                     return false;
                 }
-                if(!signature){
+                if(!this.article.signature){
+                    alert('文章不能没有签名')
                     return false
                 }
-                if(!article){
+                if(!this.article.article){
+                    alert('文章不能没有内容')
                     return false
                 }
-                if(!tags){
-
+                if(!this.article.tags){
+                    alert('文章不能没有标签')
+                    return false
                 }
+                return true
             },
             put(){
                 console.log(this.article);
-
-                Ajax.post(apiUrl.putArticle,{data:this.article},function(res){
-                    console.log(res);
-                })
+                if(this.isEmpty()){
+                    Ajax.post(apiUrl.putArticle,{data:this.article},function(res){
+                        console.log(res);
+                    })
+                }
             },
             submit(){
-                console.log('点击了提交');
                 const _this = this;
-                _this.article.type = 1;
+                _this.article.type = 'put';
                 _this.put();
             },
             save(){
                 const _this = this;
-                _this.article.type = 0;
+                _this.article.type = 'save';
                 _this.put();
             },
         },

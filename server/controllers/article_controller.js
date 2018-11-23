@@ -66,10 +66,12 @@ function updateTagClassify(article) {
 	let o = {
 		'id': article.id,
 	}
-
+	console.log('o', o);
 	TagClassify.findOneAndUpdate({})
 		.exec(function (err, tcf) {
 			if (err) { console.log(err) }
+			console.log('tcf', tcf);
+			console.log('tags', tags);
 			for (let i = 0; i < tags.length; i++) {
 				/* Set a tag if tag is found in TagClassify. Then set true */
 				let hasTag = false;
@@ -95,7 +97,7 @@ function updateTagClassify(article) {
 				}
 			}
 			tcf.save((err, tcf) => {
-				if (err) { 
+				if (err) {
 					console.log('Failed to update tagClassify table');
 					console.log(err);
 					return false;
@@ -117,6 +119,7 @@ var article ={
 updateTagClassify(article);
 */
 
+console.log((new Date(1542972209162)).getFullYear());
 
 /**
  * update timeClassify  in database
@@ -128,7 +131,7 @@ updateTagClassify(article);
 function updateTimeClassify(article) {
 	TimeClassify.findOneAndUpdate({}).exec(function (err, timecf) {
 		if (err) { console.log(err) }
-		const date = new Date(article.time);
+		let date = new Date(+article.time);
 		let obj = {
 			'year': date.getFullYear(),
 			'count': 1,
@@ -147,11 +150,11 @@ function updateTimeClassify(article) {
 		timecf.count++;
 		insertTimeClassify(timecf.childrens, obj, ['year', 'month', 'day']);
 		timecf.save(function (err, timecf) {
-			if (err) { 
+			if (err) {
 				console.log('Failed to update timeClassify table');
 				console.log(err);
 				return false;
-			 }
+			}
 			console.log('Success to update timeClassify table');
 			console.log(timecf);
 			return true;
@@ -194,9 +197,10 @@ const articleController = {
 	 * @param {JSON:{success|error,message,id}} res 
 	 */
 	putArticle(req, res) {
+		console.log(req.body);
 		const data = JSON.parse(req.body.data);
 		let article = {
-			'time': Date.now(),
+			'time': Number(Date.now()),
 			'title': data.title,
 			'signature': data.signature,
 			'tags': data.tags,
@@ -209,47 +213,42 @@ const articleController = {
 		if (data.type == 'save') {
 			const ac = new Draft(article);
 			ac.save(function (err, ac) {
-				if (err) { 
+				if (err) {
 					console.log(err);
-					res.status(500).json({
-						error:true,
-						message:'保存草稿出错',
+					res.setHeader().status(500).json({
+						error: true,
+						message: '保存草稿出错',
 					}).end();
 				}
 				console.log('插入草稿表成功');
 				console.log(ac);
 				res.status(200).json({
-					success:true,
-					message:'保存草稿成功',
-					id:ac.id
+					success: true,
+					message: '保存草稿成功',
+					id: ac.id
 				}).end();
 			})
 		}
 		else if (data.type == 'put') {
 			const ac = new Article(article);
 			ac.save(function (err, ac) {
-				if (err) { 
+				if (err) {
 					console.log(err);
 					res.status(500).json({
-						error:true,
-						message:'保存文章出错',
+						error: true,
+						message: '保存文章出错',
 					}).end();
 				}
 				console.log('插入到文章表中成功');
 				console.log(ac);
-				if(updateTimeClassify(ac) && updateTagClassify(ac)){
-					res.status(200).json({
-						success:true,
-						message:'发布文章成功',
-						id:ac.id
-					}).end()
-				}else{
-					res.status(500).json({
-						error:true,
-						message:'更新时间表或标签表出错',
-						id:ac.id
-					})
-				}
+				updateTimeClassify(ac)
+				updateTagClassify(ac)
+				res.json({
+					success: true,
+					message: '发布文章成功',
+					id: ac.id
+				}).end()
+				
 			})
 		}
 	},
@@ -267,14 +266,14 @@ const articleController = {
 					if (err) {
 						console.log(err);
 						res.statue(404).json({
-							error:true,
-							message:'查询文章失败',
+							error: true,
+							message: '查询文章失败',
 						}).end();
 					}
 					res.status(200).json({
-						success:true,
-						message:'查询文章成功',
-						article:article.article
+						success: true,
+						message: '查询文章成功',
+						article: article.article
 					}).end();
 				})
 		}
@@ -285,7 +284,7 @@ const articleController = {
 	 * if time: You will get 20 articles in the latest time later than a;
 	 * if idList: You will get data matching ID with idList.
 	 * 
-	 * @param {mode,time|idList} req.body
+	 * @param {String:mode:,time|idList} req.body
 	 * @param {success|err,ArrayList} res 
 	 */
 	getArticleList(req, res) {
