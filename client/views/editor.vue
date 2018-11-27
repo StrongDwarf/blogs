@@ -75,13 +75,19 @@
             },
             submit(){
                 const _this = this;
-                _this.article.type = 'put';
-                _this.put();
+                if(this.isEmpty()){
+                    Ajax.post(apiUrl.putArticle,{data:this.article},function(res){
+                        console.log(res);
+                    })
+                }
             },
             save(){
                 const _this = this;
-                _this.article.type = 'save';
-                _this.put();
+                if(this.isEmpty()){
+                    Ajax.post(apiUrl.putDraft,{data:this.article},function(res){
+                        console.log(res);
+                    })
+                }
             },
         },
         mounted(){

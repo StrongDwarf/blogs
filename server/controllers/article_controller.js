@@ -61,7 +61,7 @@ function init() {
  * @param {tags:Array,id:String} article 
  * @param {true|false} return
  */
-function updateTagClassify(type,article) {
+function updateTagClassify(type, article) {
 	console.log(article);
 	const tags = article.tags;
 	if (!tags) { return }
@@ -74,7 +74,7 @@ function updateTagClassify(type,article) {
 			if (err) { console.log(err) }
 			console.log('tcf', tcf);
 			console.log('tags', tags);
-			if(type =='add'){
+			if (type == 'add') {
 				for (let i = 0; i < tags.length; i++) {
 					/* Set a tag if tag is found in TagClassify. Then set true */
 					let hasTag = false;
@@ -99,24 +99,24 @@ function updateTagClassify(type,article) {
 						tcf.childrens.push(children);
 					}
 				}
-			}else if(type == 'remove'){
-				for(let i =0;i<tags.length;i++){
-					let tagIndex = tcf.childrens.findIndex((val) =>{
-						if(val['tag_name'] == tags[i]){
+			} else if (type == 'remove') {
+				for (let i = 0; i < tags.length; i++) {
+					let tagIndex = tcf.childrens.findIndex((val) => {
+						if (val['tag_name'] == tags[i]) {
 							return true;
 						}
 						return false
 					})
-					if(tagIndex != -1){
-						let articleIndex = tcf.childrens[tagIndex].childrens.findIndex(val=>{
-							if(val['id'] == article.id){
+					if (tagIndex != -1) {
+						let articleIndex = tcf.childrens[tagIndex].childrens.findIndex(val => {
+							if (val['id'] == article.id) {
 								return true;
 							}
 							return false
 						})
-						if(articleIndex != -1){
-							tcf.childrens[tagIndex]['count'] --;
-							tcf.childrens[tagIndex].childrens.splice(articleIndex,1);
+						if (articleIndex != -1) {
+							tcf.childrens[tagIndex]['count']--;
+							tcf.childrens[tagIndex].childrens.splice(articleIndex, 1);
 						}
 					}
 				}
@@ -135,9 +135,6 @@ function updateTagClassify(type,article) {
 		})
 }
 
-TagClassify.findOne({}).exec((err,tc) => {
-	console.log(tc);
-})
 /* 
 @test updateTagClassify(article) 
 var article ={
@@ -159,7 +156,7 @@ updateTagClassify(article);
 function updateTimeClassify(type, article) {
 	TimeClassify.findOne({}).exec(function (err, timecf) {
 		if (err) { console.log(err) }
-		if(type == 'add'){
+		if (type == 'add') {
 			let date = new Date(+article.time);
 			let obj = {
 				'year': date.getFullYear(),
@@ -178,11 +175,11 @@ function updateTimeClassify(type, article) {
 			}
 			timecf.count++;
 			insertTimeClassify(timecf.childrens, obj, ['year', 'month', 'day']);
-			console.log('111',timecf);
-		}else if(type == 'remove'){
-			timecf = removeTimeClassify(timecf, +article.time,article.id);
+			console.log('111', timecf);
+		} else if (type == 'remove') {
+			timecf = removeTimeClassify(timecf, +article.time, article.id);
 		}
-		console.log('222',timecf);
+		console.log('222', timecf);
 		let tc = new TimeClassify(timecf);
 		tc.save(function (err, tc) {
 			if (err) {
@@ -248,7 +245,7 @@ function removeTimeClassify(timecf, time, id) {
 		return false;
 	})
 	let month = year.childrens[monthIndex];
-	console.log('month',month);
+	console.log('month', month);
 	month['count']--;
 	let dayIndex = month.childrens.findIndex((val) => {
 		if (val.day == date.getDate()) {
@@ -256,9 +253,9 @@ function removeTimeClassify(timecf, time, id) {
 		}
 		return false;
 	})
-	console.log('dayIndex',dayIndex);
+	console.log('dayIndex', dayIndex);
 	let day = month.childrens[dayIndex];
-	console.log('day',day);
+	console.log('day', day);
 	day['count']--;
 	let articleIndex = day.childrens.findIndex((val) => {
 		if (val.id == id) {
@@ -281,8 +278,17 @@ const articleController = {
 	 * @param {JSON:{success|error,message,id}} res 
 	 */
 	putArticle(req, res) {
-		console.log(req.body);
-		const data = JSON.parse(req.body.data);
+		if (!req.body.data) {
+			res.json({
+				error: true,
+				message: '数据格式错误'
+			}).end();
+			return;
+		}
+		let data = req.body.data
+		if(typeof req.body.data != 'object'){
+			 data = JSON.parse(data);
+		}
 		let article = {
 			'time': Number(Date.now()),
 			'title': data.title,
@@ -292,46 +298,26 @@ const articleController = {
 			'isSecret': false,
 			'summary': getSummary(data.article)
 		};
-		if (data.type == 'save') {
-			const ac = new Draft(article);
-			ac.save(function (err, ac) {
-				if (err) {
-					console.log(err);
-					res.setHeader().status(500).json({
-						error: true,
-						message: '保存草稿出错',
-					}).end();
-				}
-				console.log('插入草稿表成功');
-				console.log(ac);
-				res.status(200).json({
-					success: true,
-					message: '保存草稿成功',
-					id: ac.id
+		const ac = new Article(article);
+		ac.save(function (err, ac) {
+			if (err) {
+				console.log(err);
+				res.status(500).json({
+					error: true,
+					message: '保存文章出错',
 				}).end();
-			})
-		}
-		else if (data.type == 'put') {
-			const ac = new Article(article);
-			ac.save(function (err, ac) {
-				if (err) {
-					console.log(err);
-					res.status(500).json({
-						error: true,
-						message: '保存文章出错',
-					}).end();
-				}
-				console.log('插入到文章表中成功');
-				console.log(ac);
-				updateTimeClassify('add',ac)
-				updateTagClassify('add',ac)
-				res.json({
-					success: true,
-					message: '发布文章成功',
-					id: ac.id
-				}).end()
-			})
-		}
+			}
+			console.log('插入到文章表中成功');
+			console.log(ac);
+			updateTimeClassify('add', ac)
+			updateTagClassify('add', ac)
+			res.json({
+				success: true,
+				message: '发布文章成功',
+				id: ac.id
+			}).end()
+		})
+
 	},
 
 	/**
@@ -532,7 +518,7 @@ const articleController = {
 	 */
 	removeArticle(req, res) {
 		if (req.body.id) {
-			Article.findOne({'_id': req.body.id }).exec((err, ar) => {
+			Article.findOne({ '_id': req.body.id }).exec((err, ar) => {
 				if (err) {
 					console.log(err);
 					res.json({
@@ -542,26 +528,26 @@ const articleController = {
 					return;
 				}
 				console.log(ar);
-				
+
 				//先更新timeClassify,tagClassify两张表
-				updateTagClassify('remove',ar);
-				updateTimeClassify('remove',ar);
+				updateTagClassify('remove', ar);
+				updateTimeClassify('remove', ar);
 				ar.remove((err) => {
-					if(err){
+					if (err) {
 						console.log(err);
 						res.json({
-							error:true,
-							message:'删除文章出错'
+							error: true,
+							message: '删除文章出错'
 						}).end();
 						return;
 					}
 					res.json({
-						success:true,
-						message:'删除文章成功'
+						success: true,
+						message: '删除文章成功'
 					}).end();
 					return;
 				})
-				
+
 			})
 		} else {
 			res.json({

@@ -7,5 +7,9 @@ const apiUrl = {
     getArticle:`${host}/getArticle`,
     //发布文章列表
     putArticle:`${host}/putArticle`,
+
+    //发布草稿
+    putDraft:`${host}/putDraft`
+    
 }
 export default apiUrl
