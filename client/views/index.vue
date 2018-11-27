@@ -1,7 +1,8 @@
 <template>
     <div>
         <indexHeader></indexHeader>
-        <articleContainer></articleContainer>
+        <articleContainer :currentArticleList="currentArticleList"
+        ></articleContainer>
         <pageTab></pageTab>
     </div>
 </template>
@@ -19,6 +20,14 @@
             return {
                 
             }
+        },
+        computed:{
+            currentArticleList(){
+                return this.$store.state.currentArticleList;
+            }
+        },
+        mounted(){
+            this.$store.dispatch('getArticleList');
         }
     }
 </script>

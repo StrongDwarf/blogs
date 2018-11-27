@@ -25,7 +25,7 @@ export default {
   background-color: #222222;
   color: #fffeff;
   text-shadow: 0 0 10px gainsboro;
-  font-size: 5vw;
-  padding: 2vw 0 2vw 0;
+  font-size: 6vw;
+  padding: 0 0 0 0;
 }
 </style>

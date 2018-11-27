@@ -4,7 +4,7 @@ const Article   = require('./controllers/article_controller.js');
 const Draft     = require('./controllers/draft_controller.js');
 //标签
 const TagClassify = require('./controllers/tagClassify_controller.js');
-
+const TimeClassify = require('./controllers/timeClassify_controller.js');
 
 module.exports = function(app){
     
@@ -21,7 +21,9 @@ module.exports = function(app){
     app.post('/getArticleList',Article.getArticleList);
     app.post('/updateArticle',Article.updateArticle);
     app.post('/removeArticle',Article.removeArticle);
-    app.post('/getClassify',Article.getClassify);
+
+    app.post('/getTimeClassify',TimeClassify.getTimeClassify);
+    app.post('/getTagClassify',TagClassify.getTagClassify);
     
     app.post('/putDraft',Draft.putDraft);
     app.post('/getDraft',Draft.getDraft);

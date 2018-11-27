@@ -66,8 +66,8 @@ const articleController = {
 			return;
 		}
 		let data = req.body.data
-		if(typeof req.body.data != 'object'){
-			 data = JSON.parse(data);
+		if (typeof req.body.data != 'object') {
+			data = JSON.parse(data);
 		}
 		let article = {
 			'time': Number(Date.now()),
@@ -135,116 +135,76 @@ const articleController = {
 	 * @param {success|err,ArrayList} res 
 	 */
 	getArticleList(req, res) {
-		if (req.body.type) {
-			switch (req.body.type) {
-				//根据时间来获取文章列表
-				case 'time':
-					//查找时间早于req.body.time的数据
-					Article.find({}, { 'title': 1, '_id': 1, 'summary': 1, 'tags': 1, 'time': 1, }).limit(20).lt('time', req.body.time)
-						.exec((err, articleList) => {
-							if (err) {
-								console.log(err);
-								res.json({
-									error: true,
-									message: '查询文章列表失败'
-								}).end();
-								return;
-							}
+		switch (req.body.type) {
+			//根据时间来获取文章列表
+			case 'time':
+				//查找时间早于req.body.time的数据
+				Article.find({}, { 'title': 1, '_id': 1, 'summary': 1, 'tags': 1, 'time': 1, }).limit(10).lt('time', req.body.time)
+					.exec((err, articleList) => {
+						if (err) {
+							console.log(err);
 							res.json({
-								success: true,
-								message: '查询成功',
-								articleList: articleList
+								error: true,
+								message: '查询文章列表失败'
 							}).end();
-						})
-					break;
-				//根据标签来获取文章列表
-				case 'idList':
-					//将ajax传递过来的idList(原本为String)转化成Array, 
-					let idList = req.body.idList.split('"').filter((val, index) => {
-						if (index % 2 != 0) {
-							return true
-						} else {
-							return false
+							return;
 						}
+						res.json({
+							success: true,
+							message: '查询成功',
+							articleList: articleList
+						}).end();
 					})
-					Article.find({ '_id': { '$in': idList } }, { 'title': 1, '_id': 1, 'summary': 1, 'tags': 1, 'time': 1, })
-						.exec((err, articleList) => {
-							if (err) {
-								console.log(err);
-								res.json({
-									error: true,
-									message: '查询文章列表失败'
-								}).end()
-								return;
-							}
+				break;
+			//根据标签来获取文章列表
+			case 'idList':
+				//将ajax传递过来的idList(原本为String)转化成Array, 
+				let idList = req.body.idList.split('"').filter((val, index) => {
+					if (index % 2 != 0) {
+						return true
+					} else {
+						return false
+					}
+				})
+				Article.find({ '_id': { '$in': idList } }, { 'title': 1, '_id': 1, 'summary': 1, 'tags': 1, 'time': 1, })
+					.exec((err, articleList) => {
+						if (err) {
+							console.log(err);
 							res.json({
-								success: true,
-								message: '查询成功',
-								articleList: articleList
+								error: true,
+								message: '查询文章列表失败'
 							}).end()
-						})
-					break;
-				default:
-					res.json({
-						error: true,
-						message: '错误type'
-					}).end()
-					break;
-			}
+							return;
+						}
+						res.json({
+							success: true,
+							message: '查询成功',
+							articleList: articleList
+						}).end()
+					})
+				break;
+			default:
+				Article.find({}, { 'title': 1, '_id': 1, 'summary': 1, 'tags': 1, 'time': 1, }).limit(10).lt('time', Date.now())
+					.exec((err, articleList) => {
+						if (err) {
+							console.log(err);
+							res.json({
+								error: true,
+								message: '查询文章列表失败'
+							}).end();
+							return;
+						}
+						res.json({
+							success: true,
+							message: '查询成功',
+							articleList: articleList
+						}).end();
+					})
+				break;
 		}
+
 	},
 
-	/**
-	 * get timeClassify of tagClassify by the type of req.body
-	 * 
-	 * @param {String} req.body.type
-	 */
-	getClassify(req, res) {
-		if (req.body.type) {
-			switch (req.body.type) {
-				case 'timeClassify':
-					TimeClassify.findOne({}).exec((err, tc) => {
-						if (err) {
-							console.log(err);
-							res.json({
-								error: true,
-								message: '查询timeClassify失败'
-							}).end()
-							return;
-						}
-						res.json({
-							success: true,
-							message: '查询timeClassify成功',
-							timeClassify: tc
-						}).end();
-					})
-					break;
-				case 'tagClassify':
-					TagClassify.findOne({}).exec((err, tc) => {
-						if (err) {
-							console.log(err);
-							res.json({
-								error: true,
-								message: '查询tagClassify失败'
-							}).end()
-							return;
-						}
-						res.json({
-							success: true,
-							message: '查询tagClassify成功',
-							tagClassify: tc
-						}).end();
-					})
-					break;
-				default:
-					res.json({
-						error: true,
-						message: '错误type'
-					}).end()
-					return;
-			}
-		}
-	},
 
 	/**
 	 * update article by id

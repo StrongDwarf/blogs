@@ -33,7 +33,7 @@ export default{
         }
     },
     mounted:function(){
-        this.selecttags = this.$store.getters.tags
+        this.selecttags = this.$store.state.tags
     },
     methods:{
         addtag(){

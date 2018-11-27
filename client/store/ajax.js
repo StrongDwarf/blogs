@@ -36,7 +36,12 @@ const Ajax = {
         {
             if(xhr.readyState == 4 && xhr.status ==200)
             {
-                callback(xhr.responseText);
+                let data = JSON.parse(xhr.responseText);
+                if(data.success){
+                    callback(JSON.parse(xhr.responseText));
+                }else{
+                    console.log(data.message);
+                }
             }
         }
     }

@@ -123,6 +123,23 @@ const timeClassifyController = {
                 return true;
             })
         })
+    },
+    getTimeClassify(req,res){
+        TimeClassify.findOne({}).exec((err, tc) => {
+            if (err) {
+                console.log(err);
+                res.json({
+                    error: true,
+                    message: '查询timeClassify失败'
+                }).end()
+                return;
+            }
+            res.json({
+                success: true,
+                message: '查询timeClassify成功',
+                timeClassify: tc
+            }).end();
+        })
     }
 }
 

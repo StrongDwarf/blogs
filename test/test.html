@@ -44,5 +44,101 @@ const Ajax = {
     }
 
 }
+   
+
+let data = [{
+    type:'p',
+    data:'<br>'
+},{
+    type:'p',
+    data:'xiaobaicia'
+},{
+    type:'h1',
+    data:'标题1',
+    childrens:[{
+        type:'h2',
+        data:'二级标题',
+        childrens:[{
+            type:'h3',
+            data:'三级标题',
+        }]
+    },{
+        type:'ul',
+        data:'ul start',
+        childrens:[{
+            type:'li',
+            data:'1,VUE的劫持实现'
+        },{
+            type:'li',
+            data:'2,Angular的脏值实现'
+        },{
+            type:'li',
+            data:'3,小白菜的意念实现'
+        }]
+    },{
+        type:'p',
+        data:'代码'
+    },{
+        type:'code',
+        data:'code start',
+        childrens:[{
+            type:'codeline',
+            data:'var vm = new Vue({'
+        },{
+            type:'codeline',
+            data:'~~nbsp; data: {'
+        },{
+            type:'codeline',
+            data:'~~nbsp; ~~nbsp; obj: {~~nbsp;'
+        }]
+    }]
+},{
+    type:'p',
+    data:'xiaobaicia',
+},{
+    type:'h2',
+    data:'a'
+}]
+
+let catalog = [{
+    type:'h1',
+    data:'一级标题',
+    childrens:[{
+        type:'h2',
+        data:'二级标题',
+    },{
+        type:'h2',
+        data:'三级标题'
+    }]
+},{
+    type:'h1',
+    data:'一级标题',
+    childrens:[{
+        type:'h3',
+        data:'三级标题'
+    }]
+}]
+
+function getCatalog(article){
+    let cata = [];
+    for(let i =0;i<article.length;i++){
+        if(article[i].type.match(/h[1-4]/)){
+            let o = {
+                type:article[i].type,
+                data:article[i].data
+            };
+            if(article[i].childrens){
+                o['childrens'] = getCatalog(article[i].childrens);
+            }
+            cata.push(o);
+        }
+    }
+    return cata;
+}
+
+function flatArticle(article){
     
+}
+
+console.log(getCatalog(data));
 </script>

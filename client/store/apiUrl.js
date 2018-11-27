@@ -7,7 +7,9 @@ const apiUrl = {
     getArticleList:`${host}/getArticleList`,
     updateArticle:`${host}/updateArticle`,
     removeArticle:`${host}/removerticle`,
-    getClassify:`${host}/getClassify`,
+
+    getTimeClassify:`${host}/getTimeClassify`,
+    getTagClassify:`${host}/getTagClassify`,
 
     putDraft:`${host}/putDraft`,
     getDraft:`${host}/getDraft`,

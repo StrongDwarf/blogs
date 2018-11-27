@@ -26,6 +26,13 @@ const Routers = [
         component:(resolve) => require(['../views/editor.vue'],resolve)
     },
     {
+        path:'/article/:id',
+        meta:{
+            title:'文章详情页'
+        },
+        component:(resolve) => require(['../views/article.vue'],resolve)
+    },
+    {
         path: '*',
         redirect: '/index'
     }

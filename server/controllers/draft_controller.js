@@ -86,7 +86,7 @@ const draftController = {
             }).end()
             return
         }
-        Draft.find({}, { 'title': 1, '_id': 1, 'summary': 1, 'tags': 1, 'time': 1, }).limit(20).lt('time', req.body.time)
+        Draft.find({}, { 'title': 1, '_id': 1, 'summary': 1, 'tags': 1, 'time': 1, }).limit(10).lt('time', req.body.time)
             .exec((err, draftList) => {
                 if (err) {
                     console.log(err);

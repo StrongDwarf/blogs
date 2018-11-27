@@ -117,6 +117,24 @@ const tagClassifyController = {
             }).end();
         }
         
+    },
+
+    getTagClassify(req,res){
+        TagClassify.findOne({}).exec((err, tc) => {
+            if (err) {
+                console.log(err);
+                res.json({
+                    error: true,
+                    message: '查询tagClassify失败'
+                }).end()
+                return;
+            }
+            res.json({
+                success: true,
+                message: '查询tagClassify成功',
+                tagClassify: tc
+            }).end();
+        })
     }
 }
 
