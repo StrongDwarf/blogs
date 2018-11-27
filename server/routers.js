@@ -2,7 +2,8 @@
 const Article   = require('./controllers/article_controller.js');
 //草稿
 const Draft     = require('./controllers/draft_controller.js');
-
+//标签
+const TagClassify = require('./controllers/tagClassify_controller.js');
 
 
 module.exports = function(app){
@@ -14,20 +15,18 @@ module.exports = function(app){
         res.end();
     });
 
+
     app.post('/putArticle',Article.putArticle);
     app.post('/getArticle',Article.getArticle);
-
-    
     app.post('/getArticleList',Article.getArticleList);
     app.post('/updateArticle',Article.updateArticle);
-    app.post('/getClassify',Article.getClassify);
     app.post('/removeArticle',Article.removeArticle);
-
+    app.post('/getClassify',Article.getClassify);
     
     app.post('/putDraft',Draft.putDraft);
     app.post('/getDraft',Draft.getDraft);
     app.post('/getDraftList',Draft.getDraftList);
     app.post('/convertArticle',Draft.convertArticle);
     
-
+    app.post('/getTags',TagClassify.getTags);
 }

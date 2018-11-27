@@ -1,15 +1,20 @@
 const host = `http://127.0.0.1:8083`
 
 const apiUrl = {
-    //获取文章列表接口
-    getArticleList:`${host}/getArticleList`,
-    //获取指定id的文章列表接口
-    getArticle:`${host}/getArticle`,
-    //发布文章列表
+    
     putArticle:`${host}/putArticle`,
+    getArticle:`${host}/getArticle`,
+    getArticleList:`${host}/getArticleList`,
+    updateArticle:`${host}/updateArticle`,
+    removeArticle:`${host}/removerticle`,
+    getClassify:`${host}/getClassify`,
 
-    //发布草稿
-    putDraft:`${host}/putDraft`
+    putDraft:`${host}/putDraft`,
+    getDraft:`${host}/getDraft`,
+    getDraftList:`${host}/getDraftList`,
+    convertArticle:`${host}/convertArticle`,
+
+    getTags:`${host}/getTags`,
     
 }
 export default apiUrl
