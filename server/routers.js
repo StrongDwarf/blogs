@@ -13,27 +13,15 @@ module.exports = function(app){
         res.send('xiaobaicai');
         res.end();
     });
-    app.post('/test',(req,res)=>
-    {
-        console.log(req.body);
-        res.setHeader('Access-Control-Allow-Origin','*');
-        res.send('test');
-        res.end();
-    })
-    app.post('/text1',(req,res) => {
-        console.log(req.body);
-        res.setHeader('Access-Control-Allow-Origin','*');
-        res.json({'data':'xiaobaicai'});
-        res.end();
-    })
 
     app.post('/putArticle',Article.putArticle);
     app.post('/getArticle',Article.getArticle);
 
-    /*
+    
     app.post('/getArticleList',Article.getArticleList);
     app.post('/updateArticle',Article.updateArticle);
     app.post('/getClassify',Article.getClassify);
+    app.post('/removeArticle',Article.removeArticle);
 
     /*
     app.post('/putDraft',Draft.putDraft);
