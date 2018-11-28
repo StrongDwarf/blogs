@@ -119,6 +119,16 @@ let catalog = [{
     }]
 }]
 
+function formatData(article){
+    for(let i =0 ;i<article.length;i++){
+        article[i].data = article[i].data.replace(/~~/g,'&');
+        if(article[i].childrens){
+            formatData(article[i].childrens);
+        }
+    }
+    return article;
+}
+
 function getCatalog(article){
     let cata = [];
     for(let i =0;i<article.length;i++){
@@ -137,8 +147,27 @@ function getCatalog(article){
 }
 
 function flatArticle(article){
+    let flatA = [];
     
+    for(let i =0;i<article.length;i++){
+        //console.log(article[i]);
+        let o = {
+            type:article[i].type,
+            data:article[i].data,
+        }
+        if(article[i].childrens && !article[i].type.match(/h[1-4]/)){
+            o.childrens = article[i].childrens;
+        }
+        flatA.push(o);
+        if(article[i].type.match(/h[1-4]/) && article[i].childrens){
+            flatA.push.apply(flatA,flatArticle(article[i].childrens))
+        }
+    }
+    return flatA;
 }
 
+
 console.log(getCatalog(data));
+formatData(data);
+console.log(flatArticle(data));
 </script>

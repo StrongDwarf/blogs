@@ -1,7 +1,10 @@
 <template>
     <div>
-        <header-bar
-         :value="headerBarName" v-once></header-bar>
+        <div style="margin:0 auto;text-align:center;margin-top:3vw;">
+            <span style="font-size:4vw;">
+                编辑博客
+            </span>
+        </div>
         <div class="editor-container">
             <input 
                 class="input"
@@ -19,7 +22,6 @@
     </div>
 </template>
 <script>
-    import headerBar from '../components/header-bar.vue'
     import valueInput from '../components/editor/value-input.vue'
     import articleEditor from '../components/editor/article-editor.vue'
     import tagsSelect from '../components/editor/tags-select.vue'
@@ -40,7 +42,6 @@
             }
         },
         components:{
-            headerBar,
             valueInput,
             articleEditor,
             tagsSelect
@@ -74,9 +75,11 @@
                 }
             },
             submit(){
+                console.log(this.article);
                 const _this = this;
                 if(this.isEmpty()){
                     Ajax.post(apiUrl.putArticle,{data:this.article},function(res){
+                        alert('发布文章成功');
                         console.log(res);
                     })
                 }
@@ -85,18 +88,20 @@
                 const _this = this;
                 if(this.isEmpty()){
                     Ajax.post(apiUrl.putDraft,{data:this.article},function(res){
+                        alert('保存文章成功');
                         console.log(res);
                     })
                 }
             },
         },
         mounted(){
+            this.$store.dispatch('getTags');
         }
     }
 </script>
 <style>
 .editor-container{
-    margin-top:12vw;
+    margin-top:4vw;
     margin-left:2vw;
     margin-right:2vw;
     margin-bottom:35vw;

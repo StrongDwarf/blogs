@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 //var expressSession = require('express-session');
 //连接数据库
 var mongoose = require('mongoose');
-var conn = mongoose.connect('mongodb://localhost/blogs');
+var conn = mongoose.connect('mongodb://localhost/blogsTest');
 
 var app = express();
 var http = require('http').Server(app);
@@ -17,7 +17,7 @@ var allowCrossDomain = function (req, res, next) {
 
 //设置bodyParse能解析的数据为无限
 app.use(allowCrossDomain);
-app.use(bodyParser.json({'limit':'1000000kb'}));
+app.use(bodyParser.json({'limit':'100000000000kb'}));
 app.use(bodyParser());
 
 

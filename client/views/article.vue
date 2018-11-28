@@ -15,12 +15,16 @@
                         {{article.signature}}
                     </p>
                 </div>
+                <div class="article-body" v-html="articleHtml">
+                    
+                </div>
             </div>
         </div>
     </div>
 </template>
 <script>
     import headerBar from '../components/header-bar.vue'
+    import articleFunc from '../globalFunc/article.js'
     export default{
         data(){
             return{
@@ -31,19 +35,28 @@
             headerBar
         },
         methods:{
-            flat(arr){
-
-            }
+            
         },
         computed:{
             article(){
                 let article = this.$store.state.currentArticle;
                 console.log(this.$store.state.currentArticle);
                 return article;
+            },
+            articleBody(){
+                let article = this.$store.state.currentArticle;
+
+            },
+            catalog(){
+                let article = this.$store.state.currentArticle;
+                return articleFunc.getCatalog(article.article);
+            },
+            articleHtml(){
+                let article = this.$store.state.currentArticle;
+                return articleFunc.renderArticle(article.article);
             }
         },
         mounted(){
-            //console.log(this.$route.params.id)
             this.$store.dispatch('getArticle',this.$route.params.id);
         }
     }
@@ -127,7 +140,11 @@ h1 h2 h3 h4{
     border-left:3px solid #ABAAAF;
     margin-left:1em;
     margin-right:1em;
-
+    background-color:#eeeeee;
+}
+.article-body ul li{
+    color:#999999;
+    border-bottom:1px solid #ABAAAF;
 }
 .article-body img{
     max-width: 90vw;

@@ -5,6 +5,7 @@ const Draft     = require('./controllers/draft_controller.js');
 //标签
 const TagClassify = require('./controllers/tagClassify_controller.js');
 const TimeClassify = require('./controllers/timeClassify_controller.js');
+const express = require('express');
 
 module.exports = function(app){
     
@@ -15,6 +16,7 @@ module.exports = function(app){
         res.end();
     });
 
+    app.use('/public',express.static('public'));
 
     app.post('/putArticle',Article.putArticle);
     app.post('/getArticle',Article.getArticle);

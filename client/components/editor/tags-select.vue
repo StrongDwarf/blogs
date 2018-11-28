@@ -27,13 +27,18 @@ export default{
     },
     data(){
         return{
-            selecttags:[],
+            //selecttags:[],
             isshow:false,
             tagadd:''
         }
     },
+    computed:{
+        selecttags(){
+            let tags = this.$store.state.tags;
+            return tags;
+        }
+    },
     mounted:function(){
-        this.selecttags = this.$store.state.tags
     },
     methods:{
         addtag(){

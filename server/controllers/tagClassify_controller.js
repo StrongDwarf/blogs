@@ -88,6 +88,7 @@ const tagClassifyController = {
     },
 
     getTags(req, res) {
+        console.log('收到请求');
         if (!tags) {
             TagClassify.findOne({}).exec((err, tc) => {
                 if (err) {
@@ -110,6 +111,7 @@ const tagClassifyController = {
                 }).end();
             })
         }else{
+            console.log(tags);
             res.json({
                 success: true,
                 message: '查询tagclassify成功',

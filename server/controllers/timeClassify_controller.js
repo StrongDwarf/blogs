@@ -106,11 +106,9 @@ const timeClassifyController = {
                 }
                 timecf.count++;
                 insertTimeClassify(timecf.childrens, obj, ['year', 'month', 'day']);
-                console.log('111', timecf);
             } else if (type == 'remove') {
                 timecf = removeTimeClassify(timecf, +article.time, article.id);
             }
-            console.log('222', timecf);
             let tc = new TimeClassify(timecf);
             tc.save(function (err, tc) {
                 if (err) {
@@ -118,8 +116,8 @@ const timeClassifyController = {
                     console.log(err);
                     return false;
                 }
-                console.log('Success to update timeClassify table');
-                console.log(tc);
+                //console.log('Success to update timeClassify table');
+                //console.log(tc);
                 return true;
             })
         })

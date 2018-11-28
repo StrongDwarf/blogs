@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const Article = mongoose.model('Article');
 const tagClassify = require('./tagClassify_controller.js');
 const timeClassify = require('./timeClassify_controller.js');
+const imgBase64 = require('../globalFunc/imgBase64');
 
 /**
  * get article summary
@@ -25,6 +26,11 @@ function getSummary(article) {
  * init()
  * When the program is first activated, the function is called to complete initialization.
  */
+/*
+require('../models/tagClassify_model');
+require('../models/timeClassify_model');
+const TagClassify = mongoose.model('TagClassify');
+const TimeClassify = mongoose.model('TimeClassify');
 function init() {
 	let tcf = new TagClassify({
 		'type': 'root',
@@ -47,7 +53,20 @@ function init() {
 		console.log(tcf);
 	})
 }
-//init()
+init()
+*/
+
+function articleImgBaseToPath(article){
+	for(let i =0;i<article.length;i++){
+		if(article[i].type == 'img'){
+			article[i].data = imgBase64.base64ToImg(article[i].data);
+		}
+		if(article[i].childrens){
+			articleImgBaseToPath(article[i].childrens);
+		}
+	}
+	return article
+}
 
 const articleController = {
 
@@ -74,7 +93,7 @@ const articleController = {
 			'title': data.title,
 			'signature': data.signature,
 			'tags': data.tags,
-			'article': data.article,
+			'article': articleImgBaseToPath(data.article),
 			'isSecret': false,
 			'summary': getSummary(data.article)
 		};
@@ -87,8 +106,6 @@ const articleController = {
 					message: '保存文章出错',
 				}).end();
 			}
-			console.log('插入到文章表中成功');
-			console.log(ac);
 			timeClassify.updateTimeClassify('add', ac)
 			tagClassify.updateTagClassify('add', ac)
 			res.json({
@@ -139,7 +156,7 @@ const articleController = {
 			//根据时间来获取文章列表
 			case 'time':
 				//查找时间早于req.body.time的数据
-				Article.find({}, { 'title': 1, '_id': 1, 'summary': 1, 'tags': 1, 'time': 1, }).limit(10).lt('time', req.body.time)
+				Article.find({}, { 'title': 1, '_id': 1, 'summary': 1, 'tags': 1, 'time': 1, }).sort({id:-1}).limit(10).lt('time', req.body.time)
 					.exec((err, articleList) => {
 						if (err) {
 							console.log(err);
@@ -184,7 +201,7 @@ const articleController = {
 					})
 				break;
 			default:
-				Article.find({}, { 'title': 1, '_id': 1, 'summary': 1, 'tags': 1, 'time': 1, }).limit(10).lt('time', Date.now())
+				Article.find({}, { 'title': 1, '_id': 1, 'summary': 1, 'tags': 1, 'time': 1, }).sort({_id:-1}).limit(10).lt('time', Date.now())
 					.exec((err, articleList) => {
 						if (err) {
 							console.log(err);

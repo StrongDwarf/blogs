@@ -37,6 +37,7 @@ const store = new Vuex.Store({
          * 调用mutations中的方法,this.$store.commit('setTags',data);
          */
         setTags(state, data) {
+            console.log('data',data);
             state.tags = data
         },
         setArticle(state,article){
@@ -66,6 +67,7 @@ const store = new Vuex.Store({
          * 调用action中的方法, this.$store.dispatch('increment',data);
          */
         getTags(context) {
+            console.log('setTags');
             Ajax.post(apiUrl.getTags, {}, (res) => {
                 context.commit('setTags', res.tags);
             })

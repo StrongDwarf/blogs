@@ -187,7 +187,7 @@ MarkDownTree.prototype = {
         //区域属于代码段
         else if(this.getTextType.flag == 'code')
         {
-            if(text.indexOf('code') ==0 && text.slice(4,).trim().indexOf('end') == 0)
+            if(text.indexOf('code') ==0 && text.slice(4,).trim().indexOf('end') != -1)
             {
                 this.getTextType.flag = 'normal';
                 //return 'code'
@@ -199,7 +199,7 @@ MarkDownTree.prototype = {
         }
         else if(this.getTextType.flag == 'ul')
         {
-            if(text.indexOf('ul') == 0 && text.slice(2,).trim().indexOf('end') == 0)
+            if(text.indexOf('ul') == 0 && text.slice(2,).trim().indexOf('end') != -1)
             {
                 this.getTextType.flag = 'normal';
                 //return 'ul'
@@ -224,6 +224,12 @@ MarkDownTree.prototype = {
         return nodeFather;
 
         function getNodeFather(){
+            if(nodeFather.type == 'code' || nodeFather.type == 'ul'){
+                if(node.type == 'p' || node.type == 'img'){
+                    return nodeFather.father;
+                }
+            }
+
             if(arr2.indexOf(node.type) != -1)
             {
                 return nodeFather;
