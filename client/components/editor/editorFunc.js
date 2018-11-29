@@ -66,11 +66,16 @@ MarkDownTree.prototype = {
     },
     //对节点数据中的一些字符进行转义
     trans(text){
+        /*
         return text.replace(/[&]/g, function(match, pos, originalText){
             switch(match){
             case "&" : return "~~";
         } 
-        }); 
+        });
+        */
+       text = text.replace(/&/g,'~~'); 
+       text = text.replace(/\+/g,'￥￥');
+       return text;
     },
     //根据输入的type和data获取节点
     getNode(type,data)

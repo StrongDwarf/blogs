@@ -5,6 +5,7 @@ const Article = mongoose.model('Article');
 const tagClassify = require('./tagClassify_controller.js');
 const timeClassify = require('./timeClassify_controller.js');
 const imgBase64 = require('../globalFunc/imgBase64');
+const fileWrite = require('../globalFunc/fileWrite');
 
 /**
  * get article summary
@@ -55,14 +56,27 @@ function init() {
 }
 init()
 */
+function conversionData(data){
+	if(typeof data == 'string'){
+		data = data.replace(/￥￥/g,'+');
+		data = data.replace(/~~/g,'&');
+		return data
+	}else{
+		data = JSON.stringify(data);
+		data = data.replace(/￥￥/g,'+');
+		data = data.replace(/~~/g,'&');
+		data = JSON.parse(data);
+		return data;
+	}
+}
 
-function articleImgBaseToPath(article){
+function articleImgBase64ToPath(article){
 	for(let i =0;i<article.length;i++){
 		if(article[i].type == 'img'){
 			article[i].data = imgBase64.base64ToImg(article[i].data);
 		}
 		if(article[i].childrens){
-			articleImgBaseToPath(article[i].childrens);
+			articleImgBase64ToPath(article[i].childrens);
 		}
 	}
 	return article
@@ -88,15 +102,18 @@ const articleController = {
 		if (typeof req.body.data != 'object') {
 			data = JSON.parse(data);
 		}
+		data.article = conversionData(data.article);
 		let article = {
 			'time': Number(Date.now()),
 			'title': data.title,
 			'signature': data.signature,
 			'tags': data.tags,
-			'article': articleImgBaseToPath(data.article),
+			'article': articleImgBase64ToPath(data.article),
 			'isSecret': false,
 			'summary': getSummary(data.article)
 		};
+
+		fileWrite.writeFile(article);
 		const ac = new Article(article);
 		ac.save(function (err, ac) {
 			if (err) {
@@ -114,6 +131,7 @@ const articleController = {
 				id: ac.id
 			}).end()
 		})
+		
 
 	},
 

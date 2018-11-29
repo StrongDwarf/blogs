@@ -1,0 +1,173 @@
+<script>
+
+function forMatData(data){
+    let str = '';
+    for(let a in data){
+        if(typeof data[a] =='object')
+        {
+            str = str + a + '=' + JSON.stringify(data[a]) + '&';
+        }
+        else
+        {
+            str = str + a + '=' + data[a] +'&';
+        } 
+    }
+    return str
+}
+
+const Ajax = {
+    get(url,callback){
+        let xhr = new XMLHttpRequest();
+        xhr.open('get',url,true);
+        xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded")
+        xhr.send();
+        xhr.onreadystatechange = function()
+        {
+            if(xhr.readyState == 4 && xhr.status == 200)
+            {
+                callback(xhr.responseText);
+            }
+        }
+    },
+    post(url,data,callback){
+        let xhr = new XMLHttpRequest();
+        xhr.open('post',url,true);
+        xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        xhr.send(forMatData(data));
+        xhr.onreadystatechange = function()
+        {
+            if(xhr.readyState == 4 && xhr.status ==200)
+            {
+                callback(xhr.responseText);
+            }
+        }
+    }
+
+}
+   
+
+let data = [{
+    type:'p',
+    data:'<br>'
+},{
+    type:'p',
+    data:'xiaobaicia'
+},{
+    type:'h1',
+    data:'标题1',
+    childrens:[{
+        type:'h2',
+        data:'二级标题',
+        childrens:[{
+            type:'h3',
+            data:'三级标题',
+        }]
+    },{
+        type:'ul',
+        data:'ul start',
+        childrens:[{
+            type:'li',
+            data:'1,VUE的劫持实现'
+        },{
+            type:'li',
+            data:'2,Angular的脏值实现'
+        },{
+            type:'li',
+            data:'3,小白菜的意念实现'
+        }]
+    },{
+        type:'p',
+        data:'代码'
+    },{
+        type:'code',
+        data:'code start',
+        childrens:[{
+            type:'codeline',
+            data:'var vm = new Vue({'
+        },{
+            type:'codeline',
+            data:'~~nbsp; data: {'
+        },{
+            type:'codeline',
+            data:'~~nbsp; ~~nbsp; obj: {~~nbsp;'
+        }]
+    }]
+},{
+    type:'p',
+    data:'xiaobaicia',
+},{
+    type:'h2',
+    data:'a'
+}]
+
+let catalog = [{
+    type:'h1',
+    data:'一级标题',
+    childrens:[{
+        type:'h2',
+        data:'二级标题',
+    },{
+        type:'h2',
+        data:'三级标题'
+    }]
+},{
+    type:'h1',
+    data:'一级标题',
+    childrens:[{
+        type:'h3',
+        data:'三级标题'
+    }]
+}]
+
+function formatData(article){
+    for(let i =0 ;i<article.length;i++){
+        article[i].data = article[i].data.replace(/~~/g,'&');
+        if(article[i].childrens){
+            formatData(article[i].childrens);
+        }
+    }
+    return article;
+}
+
+function getCatalog(article){
+    let cata = [];
+    for(let i =0;i<article.length;i++){
+        if(article[i].type.match(/h[1-4]/)){
+            let o = {
+                type:article[i].type,
+                data:article[i].data
+            };
+            if(article[i].childrens){
+                o['childrens'] = getCatalog(article[i].childrens);
+            }
+            cata.push(o);
+        }
+    }
+    return cata;
+}
+
+function flatArticle(article){
+    let flatA = [];
+    
+    for(let i =0;i<article.length;i++){
+        //console.log(article[i]);
+        let o = {
+            type:article[i].type,
+            data:article[i].data,
+        }
+        if(article[i].childrens && !article[i].type.match(/h[1-4]/)){
+            o.childrens = article[i].childrens;
+        }
+        flatA.push(o);
+        if(article[i].type.match(/h[1-4]/) && article[i].childrens){
+            flatA.push.apply(flatA,flatArticle(article[i].childrens))
+        }
+    }
+    return flatA;
+}
+
+
+console.log(getCatalog(data));
+formatData(data);
+console.log(flatArticle(data));
+</script>
