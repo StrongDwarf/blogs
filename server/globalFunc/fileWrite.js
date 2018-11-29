@@ -7,7 +7,7 @@ const articleFunc = {
         for (let i = 0; i < article.length; i++) {
             //article[i].data = article[i].data.replace(/\s/g,'+');
             article[i].data = article[i].data.replace(/~~/g, '&');
-            article[i].data = article[i].data.replace(/&nbsp;/g,'  ');
+            article[i].data = article[i].data.replace(/&nbsp;/g, '  ');
             if (article[i].childrens) {
                 articleFunc.formatData(article[i].childrens);
             }
@@ -33,7 +33,7 @@ const articleFunc = {
     },
     flatArticle(article) {
         let flatA = [];
-        if(!article.length){
+        if (!article.length) {
             return flatA;
         }
         for (let i = 0; i < article.length; i++) {
@@ -51,12 +51,12 @@ const articleFunc = {
         }
         return flatA;
     },
-    renderArticle(article){
+    renderArticle(article) {
         articleFunc.formatData(article);
         article = articleFunc.flatArticle(article);
         let str = '';
-        for(let i =0;i<article.length;i++){
-            switch(article[i].type){
+        for (let i = 0; i < article.length; i++) {
+            switch (article[i].type) {
                 case 'p':
                     str += `<p>${article[i].data}</p>`;
                     break;
@@ -76,8 +76,8 @@ const articleFunc = {
                     str += `<div class="code">
                                 <div class="code-container">`
                     let haveImg = false;
-                    for(let j = 0;j<article[i].childrens.length;j++){
-                        if(article[i].childrens[j].type == 'img'){
+                    for (let j = 0; j < article[i].childrens.length; j++) {
+                        if (article[i].childrens[j].type == 'img') {
                             str += `</div></div>`;
                             str += `<img src="${article[i].childrens[j].data}" alt="图片无法显示">`;
                             haveImg = true;
@@ -85,13 +85,13 @@ const articleFunc = {
                         }
                         str += `<p>${article[i].childrens[j].data}</p>`;
                     }
-                    if(!haveImg){
+                    if (!haveImg) {
                         str += `</div></div>`
                     }
                     break;
                 case 'ul':
                     str += `<ul>`
-                    for(let j=0;j<article[i]['childrens'].length;j++){
+                    for (let j = 0; j < article[i]['childrens'].length; j++) {
                         str += `<li>${article[i].childrens[j].data}</li>`;
                     }
                     str += `</ul>`
@@ -105,13 +105,13 @@ const articleFunc = {
         }
         return str;
     },
-    getArticleMDString(article){
+    getArticleMDString(article) {
         //let catalog = this.getCatalog(article);
         articleFunc.formatData(article);
         article = articleFunc.flatArticle(article);
         let str = '';
-        for(let i =0;i<article.length;i++){
-            switch(article[i].type){
+        for (let i = 0; i < article.length; i++) {
+            switch (article[i].type) {
                 case 'p':
                     str += `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${article[i].data}<br>\n`;
                     break;
@@ -129,13 +129,13 @@ const articleFunc = {
                     break;
                 case 'code':
                     str += '```\n'
-                    for(let j = 0;j<article[i].childrens.length;j++){
+                    for (let j = 0; j < article[i].childrens.length; j++) {
                         str += `${article[i].childrens[j].data}\n`;
                     }
                     str += '```\n'
                     break;
                 case 'ul':
-                    for(let j=0;j<article[i]['childrens'].length;j++){
+                    for (let j = 0; j < article[i]['childrens'].length; j++) {
                         str += `* ${article[i].childrens[j].data}\n`;
                     }
                     break;
@@ -161,19 +161,41 @@ fs.writeFile(learningNotesPath+'xiaobaicai.md',data,function(err){
 */
 
 const writeFile = {
-    writeFile(article){
+    writeFile(article) {
         let str = '';
         str += '# ' + article.title + '\n';
-        str += articleFunc.getArticleMDString(article.article)
-        var month = ((new Date()).getMonth()+1)+'月'
-        let path = learningNotesPath+month+'/'+article.title+'.md'
-        fs.writeFile(path,str,function(err){
-            if(err){
-                console.log(err)
-            }else{
+        str += articleFunc.getArticleMDString(article.article);
+        var month = ((new Date()).getMonth() + 1) + '月';
+        let path = learningNotesPath +'/timeClassify/'+ month + '/' + article.title + '.md';
+        if (!fs.existsSync(learningNotesPath +'/timeClassify/'+  month )) {
+            fs.mkdirSync(learningNotesPath +'/timeClassify/'+  month );
+        }
+        //按照月份写入时间表中
+        fs.writeFile(path, str, function (err) {
+            if (err) {
+                console.log(err);
+            } else {
                 console.log('写入成功!');
             }
         })
+        //按照标签写入标签表中
+        console.log(article.tags);
+        if (article.tags) {
+            for (let i = 0; i < article.tags.length; i++) {
+                path = learningNotesPath + '/tagClassify/'+article.tags[i] + '/' + article.title + '.md'
+                //如果文件夹不存在，创建文件夹
+                if (!fs.existsSync(learningNotesPath + '/tagClassify/'+ article.tags[i])) {
+                    fs.mkdirSync(learningNotesPath+ '/tagClassify/' + article.tags[i]);
+                }
+                fs.writeFile(path, str, function (err) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log('写入成功!');
+                    }
+                })
+            }
+        }
     }
 }
 

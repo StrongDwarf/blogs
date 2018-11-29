@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 //var expressSession = require('express-session');
 //连接数据库
 var mongoose = require('mongoose');
-var conn = mongoose.connect('mongodb://localhost/blogsTest');
+var conn = mongoose.connect('mongodb://localhost/blogs');
 
 var app = express();
 var http = require('http').Server(app);
