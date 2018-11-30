@@ -166,9 +166,10 @@ const writeFile = {
         str += '# ' + article.title + '\n';
         str += articleFunc.getArticleMDString(article.article);
         var month = ((new Date()).getMonth() + 1) + '月';
-        let path = learningNotesPath +'/timeClassify/'+ month + '/' + article.title + '.md';
-        if (!fs.existsSync(learningNotesPath +'/timeClassify/'+  month )) {
-            fs.mkdirSync(learningNotesPath +'/timeClassify/'+  month );
+        var day = (new Date()).getDate()+'日-';
+        let path = learningNotesPath +'/时间分类/'+ month + '/' + day+article.title + '.md';
+        if (!fs.existsSync(learningNotesPath +'/时间分类/'+  month )) {
+            fs.mkdirSync(learningNotesPath +'/时间分类/'+  month );
         }
         //按照月份写入时间表中
         fs.writeFile(path, str, function (err) {
@@ -182,10 +183,10 @@ const writeFile = {
         console.log(article.tags);
         if (article.tags) {
             for (let i = 0; i < article.tags.length; i++) {
-                path = learningNotesPath + '/tagClassify/'+article.tags[i] + '/' + article.title + '.md'
+                path = learningNotesPath + '/标签分类/'+article.tags[i] + '/' + article.title + '.md'
                 //如果文件夹不存在，创建文件夹
-                if (!fs.existsSync(learningNotesPath + '/tagClassify/'+ article.tags[i])) {
-                    fs.mkdirSync(learningNotesPath+ '/tagClassify/' + article.tags[i]);
+                if (!fs.existsSync(learningNotesPath + '/标签分类/'+ article.tags[i])) {
+                    fs.mkdirSync(learningNotesPath+ '/标签分类/' + article.tags[i]);
                 }
                 fs.writeFile(path, str, function (err) {
                     if (err) {
