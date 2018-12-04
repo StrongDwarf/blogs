@@ -160,14 +160,25 @@ fs.writeFile(learningNotesPath+'xiaobaicai.md',data,function(err){
 })
 */
 
+let datePutArticleCountArray = {};
+
+
 const writeFile = {
     writeFile(article) {
         let str = '';
         str += '# ' + article.title + '\n';
         str += articleFunc.getArticleMDString(article.article);
+        let time = new Date(Date.now()).toLocaleDateString();
+        let articleFileName = article.title + '.md';
+        //判断今天发了几篇文章
+        if(datePutArticleCountArray[time]){
+            datePutArticleCountArray[time]++;
+        }else{
+            datePutArticleCountArray[time] = 1;
+        }
+        articleFileName = time+'-'+datePutArticleCountArray[time]+'-'+articleFileName;
         var month = ((new Date()).getMonth() + 1) + '月';
-        var day = (new Date()).getDate()+'日-';
-        let path = learningNotesPath +'/时间分类/'+ month + '/' + day+article.title + '.md';
+        let path = learningNotesPath +'/时间分类/'+ month + '/' + articleFileName;
         if (!fs.existsSync(learningNotesPath +'/时间分类/'+  month )) {
             fs.mkdirSync(learningNotesPath +'/时间分类/'+  month );
         }
@@ -183,7 +194,7 @@ const writeFile = {
         console.log(article.tags);
         if (article.tags) {
             for (let i = 0; i < article.tags.length; i++) {
-                path = learningNotesPath + '/标签分类/'+article.tags[i] + '/' + article.title + '.md'
+                path = learningNotesPath + '/标签分类/'+article.tags[i] + '/' + articleFileName;
                 //如果文件夹不存在，创建文件夹
                 if (!fs.existsSync(learningNotesPath + '/标签分类/'+ article.tags[i])) {
                     fs.mkdirSync(learningNotesPath+ '/标签分类/' + article.tags[i]);
