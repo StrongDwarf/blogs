@@ -168,6 +168,8 @@ const writeFile = {
         let str = '';
         str += '# ' + article.title + '\n';
         str += articleFunc.getArticleMDString(article.article);
+        str = str.replace(/\&lt;/g,'<');
+        str = str.replace(/\&gt;/g,'>');
         let time = new Date(Date.now()).toLocaleDateString();
         let articleFileName = article.title + '.md';
         //判断今天发了几篇文章
