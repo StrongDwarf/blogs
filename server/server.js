@@ -5,7 +5,8 @@ var bodyParser = require('body-parser');
 //连接数据库
 var mongoose = require('mongoose');
 var conn = mongoose.connect('mongodb://localhost/blogs');
-
+const multer = require('multer');
+const fs = require('fs');
 var app = express();
 var http = require('http').Server(app);
 
@@ -20,7 +21,7 @@ app.use(allowCrossDomain);
 app.use(bodyParser.json({'limit':'100000000000kb'}));
 app.use(bodyParser());
 
-
+app.use(multer({ dest: '/tmp/'}).array('image'));
 /*
 app.use(cookieParser());
 app.use(expressSession({
@@ -32,3 +33,16 @@ app.use(expressSession({
 require('./routers')(app);
 http.listen(8083);
 console.log('server start port 8083');
+
+(function getIPAdress(){
+    var interfaces = require('os').networkInterfaces();
+    for(var devName in interfaces){
+        var iface = interfaces[devName];
+        for(var i=0;i<iface.length;i++){
+            var alias = iface[i];
+            if(alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal){
+                console.log("ip:"+alias.address+":8083");
+            }
+        }
+    }
+})()
