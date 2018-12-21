@@ -140,7 +140,8 @@ const articleFunc = {
                     }
                     break;
                 case 'img':
-                    str += `<img src="${article[i].data}">`;
+                    //str += `<img src="${article[i].data}">`;
+                    str += `\n![ ](${article[i].data} " ")\n`
                     break;
                 default:
                     break

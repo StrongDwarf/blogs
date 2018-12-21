@@ -13,7 +13,10 @@ module.exports = function (app) {
 
     app.get('/test', (req, res) => {
         console.log(req.body);
-        res.send('xiaobaicai');
+        res.json({
+            'name':'xiaobaicai',
+            'age':12
+        });
         res.end();
     });
     app.get('/testjson', (req, res) => {
