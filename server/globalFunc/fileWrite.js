@@ -179,7 +179,7 @@ const writeFile = {
         }else{
             datePutArticleCountArray[time] = 1;
         }
-        articleFileName = time+'-'+datePutArticleCountArray[time]+'-'+articleFileName;
+        //articleFileName = time+'-'+datePutArticleCountArray[time]+'-'+articleFileName;
         var month = ((new Date()).getMonth() + 1) + '月';
         let path = learningNotesPath +'/时间分类/'+ month + '/' + articleFileName;
         if (!fs.existsSync(learningNotesPath +'/时间分类/'+  month )) {
