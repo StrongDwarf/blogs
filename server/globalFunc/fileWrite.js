@@ -180,10 +180,11 @@ const writeFile = {
             datePutArticleCountArray[time] = 1;
         }
         //articleFileName = time+'-'+datePutArticleCountArray[time]+'-'+articleFileName;
+        var year = ((new Date()).getFullYear() + 1);
         var month = ((new Date()).getMonth() + 1) + '月';
-        let path = learningNotesPath +'/时间分类/'+ month + '/' + articleFileName;
-        if (!fs.existsSync(learningNotesPath +'/时间分类/'+  month )) {
-            fs.mkdirSync(learningNotesPath +'/时间分类/'+  month );
+        let path = learningNotesPath +'/时间分类/'+ year + '/' + month + '/' + articleFileName;
+        if (!fs.existsSync(learningNotesPath +'/时间分类/'+ year + '/'+  month )) {
+            fs.mkdirSync(learningNotesPath +'/时间分类/'+ year + '/' + month );
         }
         //按照月份写入时间表中
         fs.writeFile(path, str, function (err) {
